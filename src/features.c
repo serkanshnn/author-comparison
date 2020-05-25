@@ -44,19 +44,45 @@ double sim_score(struct features *s1, struct features *s2) {
 void compute_features(char *text, struct features *feat) {
     /* TODO: Ortak kod */
 
-#ifdef WITH_UTHASH
-    /* TODO: Hash kullanarak kelime listesini
-     * gezip ilgili sayaclari hesaplayin. Gezdikce
-     * dugumleri HASH_DEL() ile temizleyip, mevcut
-     * dugumun char* uyesini ve dugumun kendisini
-     * free() ile iade etmelisiniz.*/
-#else
-    /* TODO: Bagli liste kullanarak kelime listesini
-     * gezin. Gezdikce dugumlerin char* uyesini ve
-     * kendisini free() ile iade etmelisiniz. */
-#endif
-    
-    /* TODO: Ortak kod. feat yapisinin uyelerini artik doldurabilirsiniz. */
+	char *sentence, *word, *sptr , *sentence_copy, *word_copy, *rest;
+	struct node *list;
+	list = malloc(sizeof(struct node));
+	sentence = strtok_r(text , "?!.", &sptr);
+	while(sentence){
+		sentence_copy = strdup(sentence);
+
+		word = strtok_r(sentence, " ,:;?!.\n\t", &rest);
+		while(word){
+			word_copy = strdup(word);
+			cleanup(word_copy);
+			if(strcmp(word_copy,"")){
+				#ifdef WITH_UTHASH
+					/* TODO: Hash kullanarak kelime listesini
+					 * gezip ilgili sayaclari hesaplayin. Gezdikce
+					 * dugumleri HASH_DEL() ile temizleyip, mevcut
+					 * dugumun char* uyesini ve dugumun kendisini
+					 * free() ile iade etmelisiniz.*/
+					list = add_word(list, word);
+				#else
+					/* TODO: Bagli liste kullanarak kelime listesini
+					 * gezin. Gezdikce dugumlerin char* uyesini ve
+					 * kendisini free() ile iade etmelisiniz. */
+					list = add_word(list, word);
+					//...
+				#endif
+				/* TODO: Ortak kod. feat yapisinin uyelerini artik doldurabilirsiniz. */
+			}
+
+			free(word_copy);
+			word = strtok_r(NULL , " ,:;?!.\n\t", &rest);
+		}
+
+		free(sentence_copy);
+		sentence = strtok_r(NULL , "?!.", &sptr);
+	}
+
+	free(list);
+
 }
 
 
