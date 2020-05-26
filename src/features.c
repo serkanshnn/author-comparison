@@ -5,6 +5,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void cleanup(char *s) {
     /* s stringini kucuk harflere cevirip basindan ve
@@ -43,10 +44,8 @@ double sim_score(struct features *s1, struct features *s2) {
 /* TODO */
 void compute_features(char *text, struct features *feat) {
     /* TODO: Ortak kod */
-
 	char *sentence, *word, *sptr , *sentence_copy, *word_copy, *rest;
-	struct node *list;
-	list = malloc(sizeof(struct node));
+	struct node* list = malloc(sizeof(struct node));
 	sentence = strtok_r(text , "?!.", &sptr);
 	while(sentence){
 		sentence_copy = strdup(sentence);
@@ -62,15 +61,14 @@ void compute_features(char *text, struct features *feat) {
 					 * dugumleri HASH_DEL() ile temizleyip, mevcut
 					 * dugumun char* uyesini ve dugumun kendisini
 					 * free() ile iade etmelisiniz.*/
-					list = add_word(list, word);
+
 				#else
 					/* TODO: Bagli liste kullanarak kelime listesini
 					 * gezin. Gezdikce dugumlerin char* uyesini ve
 					 * kendisini free() ile iade etmelisiniz. */
-					list = add_word(list, word);
-					//...
+					list = add_word(&list, word_copy);
+					printf("%s -> %d\n",list->word, list->count);
 				#endif
-				/* TODO: Ortak kod. feat yapisinin uyelerini artik doldurabilirsiniz. */
 			}
 
 			free(word_copy);
@@ -80,7 +78,7 @@ void compute_features(char *text, struct features *feat) {
 		free(sentence_copy);
 		sentence = strtok_r(NULL , "?!.", &sptr);
 	}
-
+	/* TODO: Ortak kod. feat yapisinin uyelerini artik doldurabilirsiniz. */
 	free(list);
 
 }
