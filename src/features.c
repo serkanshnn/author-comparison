@@ -66,7 +66,7 @@ void compute_features(char *text, struct features *feat) {
 					/* TODO: Bagli liste kullanarak kelime listesini
 					 * gezin. Gezdikce dugumlerin char* uyesini ve
 					 * kendisini free() ile iade etmelisiniz. */
-					list = add_word(&list, word_copy);
+					list = add_word(list, word_copy);
 					printf("%s -> %d\n",list->word, list->count);
 				#endif
 			}
@@ -79,6 +79,7 @@ void compute_features(char *text, struct features *feat) {
 		sentence = strtok_r(NULL , "?!.", &sptr);
 	}
 	/* TODO: Ortak kod. feat yapisinin uyelerini artik doldurabilirsiniz. */
+
 	free(list);
 
 }
