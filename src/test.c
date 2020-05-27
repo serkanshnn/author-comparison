@@ -14,6 +14,9 @@ int main(int argc, char *argv[]) {
     struct features s1 = {NULL, 4.4, 0.1, 0.05, 10.0, 2.0};
     struct features s2 = {NULL, 4.3, 0.1, 0.04, 16.0, 4.0};
 
+
+    sim_score(&s1,&s2);
+
     char text[] = "The time has come, the Walrus said\n"
             "To talk of many things: of shoes - and ships - and sealing wax,\n"
             "Of cabbages; and kings.\n"

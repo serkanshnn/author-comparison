@@ -39,6 +39,30 @@ void cleanup(char *s) {
 
 /* TODO: iki imza arasindaki benzerligi hesaplayan fonksiyon. */
 double sim_score(struct features *s1, struct features *s2) {
+
+
+	struct features *dosya1=s1;
+	struct features *dosya2=s2;
+
+
+	printf("%lf : ",dosya1->avg_word_length);
+
+
+	double fa[4]={dosya1->avg_word_length,dosya1->avg_word_per_sentence,dosya1->complexity,dosya1->hapax,dosya1->ttr};
+	double fb[4]={dosya2->avg_word_length,dosya2->avg_word_per_sentence,dosya2->complexity,dosya2->hapax,dosya2->ttr};
+	double sonuc=0;
+	double w1=1;
+
+	int i;
+	for(i=0;i<5;i++){
+
+		sonuc+=w1*fabs(fa[i]-fb[i]);
+		printf("%lf : ",sonuc);
+	}
+
+	printf("%lf : ",sonuc);
+
+
 }
 
 /* TODO */
