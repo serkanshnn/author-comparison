@@ -11,38 +11,25 @@ struct node* add_word(struct node *list, char *word) {
     //HASH_FIND_STR(list, word, cur);
 #else
     /* TODO: Bagli liste kodu */
-    struct node* new = malloc(sizeof(struct node));
-	new->word = malloc(sizeof(char) * 100);
+    struct node *new = malloc(sizeof(struct node));
+    new->word = strdup(word);
+    new->count = 1;
+    new->next = list;
 
-	strcpy(new->word, word);
+    cur = list;
 
-	new->count = 1;
-	new->next = list;
+    while(cur != NULL){
+    	if(!strcmp(word, cur->word)){
+    		cur->count++;
+    		return list;
+    	}
+    	cur = cur->next;
+    }
 
-	if(cur == NULL){
+    if(cur == NULL){
 		cur = new;
 		return new;
-	}
-
-	struct node *head = cur;
-
-	struct node *prev;
-
-	while(head != NULL){
-		if(head->word == new->word){
-			head->count++;
-			new = NULL;
-			return new;
-		} else{
-			prev = head;
-			head = head->next;
-		}
-	}
-
-	if(head == NULL){
-		prev->next = new;
-		return new;
-	}
+    }
 
 #endif
 

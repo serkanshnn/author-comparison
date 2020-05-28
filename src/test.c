@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
 
     sim_score(&s1,&s2);
 
-    char text[] = "The time has come, the Walrus said\n"
+    char text1[] = "The time has come, the Walrus said\n"
             "To talk of many things: of shoes - and ships - and sealing wax,\n"
             "Of cabbages; and kings.\n"
             "And why the sea is boiling hot;\n"
@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     char text2[] = "James Fennimore Cooper\nPeter, Paul, and Mary\n";
     char text3[] = "James Fennimore Cooper\nPeter, Paul, and Mary\nJames Gosling\n";
 
-    compute_features(text, &test);
+    compute_features(text1, &test);
     assert(ALMOSTEQ(test.avg_word_per_sentence, 17.5) == 1);
     printf("AWPS test PASSED.\n");
     assert(ALMOSTEQ(test.complexity, 3.5) == 1);

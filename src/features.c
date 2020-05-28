@@ -69,7 +69,7 @@ double sim_score(struct features *s1, struct features *s2) {
 void compute_features(char *text, struct features *feat) {
     /* TODO: Ortak kod */
 	char *sentence, *word, *sptr , *sentence_copy, *word_copy, *rest;
-	struct node* list = malloc(sizeof(struct node));
+	struct node* list = NULL;
 	sentence = strtok_r(text , "?!.", &sptr);
 	while(sentence){
 		sentence_copy = strdup(sentence);
@@ -91,7 +91,6 @@ void compute_features(char *text, struct features *feat) {
 					 * gezin. Gezdikce dugumlerin char* uyesini ve
 					 * kendisini free() ile iade etmelisiniz. */
 					list = add_word(list, word_copy);
-					printf("%s -> %d\n",list->word, list->count);
 				#endif
 			}
 
@@ -103,7 +102,10 @@ void compute_features(char *text, struct features *feat) {
 		sentence = strtok_r(NULL , "?!.", &sptr);
 	}
 	/* TODO: Ortak kod. feat yapisinin uyelerini artik doldurabilirsiniz. */
-
+	while(list != NULL){
+		printf("%s -> %d\n", list->word, list->count);
+		list = list->next;
+	}
 	free(list);
 
 }
