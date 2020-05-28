@@ -42,6 +42,7 @@ double sim_score(struct features *s1, struct features *s2) {
 
 
 	
+	
 	struct features *dosya1=s1; //gelen dosyayı geçiçi bir değişkene atıyoruz.
 	struct features *dosya2=s2;
 
