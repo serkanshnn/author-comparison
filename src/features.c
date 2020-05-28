@@ -41,28 +41,26 @@ void cleanup(char *s) {
 double sim_score(struct features *s1, struct features *s2) {
 
 
-	
-	struct features *dosya1=s1; //gelen dosyayı geçiçi bir değişkene atıyoruz.
+	struct features *dosya1=s1;
 	struct features *dosya2=s2;
 
-	//bu kısımda fai fbi değerleri için bir dizi oluşturup bu diziye bu değerleri aktarıyoruz.
-	double fa[5]={dosya1->avg_word_length,dosya1->avg_word_per_sentence,dosya1->complexity,dosya1->hapax,dosya1->ttr};
-	double fb[5]={dosya2->avg_word_length,dosya2->avg_word_per_sentence,dosya2->complexity,dosya2->hapax,dosya2->ttr};
+
+	printf("%lf : ",dosya1->avg_word_length);
 
 
+	double fa[4]={dosya1->avg_word_length,dosya1->avg_word_per_sentence,dosya1->complexity,dosya1->hapax,dosya1->ttr};
+	double fb[4]={dosya2->avg_word_length,dosya2->avg_word_per_sentence,dosya2->complexity,dosya2->hapax,dosya2->ttr};
 	double sonuc=0;
-	//w değeri için dizi oluşturup değerleri içine aktarıyoruz.
-	double w[5]={11,33,50,0.4,4};
+	double w1=1;
 
-	//gerekli olan hesaplama for döngüsü içinde hesaplanır.
 	int i;
 	for(i=0;i<5;i++){
 
-		sonuc+=w[i]*fabs(fa[i]-fb[i]);
-
+		sonuc+=w1*fabs(fa[i]-fb[i]);
+		printf("%lf : ",sonuc);
 	}
 
-	return sonuc;//bulunan sonuç değeri geri döndürülür.
+	printf("%lf\n",sonuc);
 
 
 }
