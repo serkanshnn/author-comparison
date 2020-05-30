@@ -30,7 +30,12 @@ struct node* add_word(struct node *list, char *word) {
 		return cur;
     }
 
+    free(new->word);
+    free(new);
+
 #endif
+
+    return -1;
 
 }
 

@@ -39,29 +39,25 @@ void cleanup(char *s) {
 
 /* TODO: iki imza arasindaki benzerligi hesaplayan fonksiyon. */
 double sim_score(struct features *s1, struct features *s2) {
-
-
 	
-	struct features *dosya1=s1; //gelen dosyayı geçiçi bir değişkene atıyoruz.
-	struct features *dosya2=s2;
+	struct features *file1 = s1; //gelen dosyayi gecici bir degişkene atiyoruz.
+	struct features *file2 = s2;
 
-	//bu kısımda fai fbi değerleri için bir dizi oluşturup bu diziye bu değerleri aktarıyoruz.
-	double fa[5]={dosya1->avg_word_length,dosya1->avg_word_per_sentence,dosya1->complexity,dosya1->hapax,dosya1->ttr};
-	double fb[5]={dosya2->avg_word_length,dosya2->avg_word_per_sentence,dosya2->complexity,dosya2->hapax,dosya2->ttr};
-	double sonuc=0;
+	//bu kisimda fai fbi degerleri icin bir dizi olusturup bu diziye bu degerleri aktariyoruz.
+	double fa[5] = {file1->avg_word_length, file1->avg_word_per_sentence, file1->complexity, file1->hapax, file1->ttr};
+	double fb[5] = {file2->avg_word_length, file2->avg_word_per_sentence, file2->complexity, file2->hapax, file2->ttr};
+	double result = 0;
 	
-	//w değeri için dizi oluşturup değerleri içine aktarıyoruz.
-	double w[5]={11,33,50,0.4,4};
+	//w degeri icin dizi olusturup degerleri icine aktariyoruz.
+	double w[5] = {11, 33, 50, 0.4, 4};
 
-	//gerekli olan hesaplama for döngüsü içinde hesaplanır.
+	//gerekli olan hesaplama for dongusu icinde hesaplanir.
 	int i;
-	for(i=0;i<5;i++){
-
-		sonuc+=w[i]*fabs(fa[i]-fb[i]);
-
+	for(i = 0; i < 5; i++){
+		result += w[i] * fabs(fa[i] - fb[i]);
 	}
 
-	return sonuc;//bulunan sonuç değeri geri döndürülür.
+	return result; //bulunan sonuc degeri geri dondurulur.
 
 
 

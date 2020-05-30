@@ -15,7 +15,8 @@ int main(int argc, char *argv[]) {
     struct features s2 = {NULL, 4.3, 0.1, 0.04, 16.0, 4.0};
 
 
-    sim_score(&s1,&s2);
+    double comparison = sim_score(&s1,&s2);
+    printf("%lf\n", comparison);
 
     char text1[] = "The time has come, the Walrus said\n"
             "To talk of many things: of shoes - and ships - and sealing wax,\n"
