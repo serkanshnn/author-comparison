@@ -8,13 +8,27 @@ struct node* add_word(struct node *list, char *word) {
     struct node *cur = NULL;
 #ifdef WITH_UTHASH
     /* TODO: Hash kodu */
-    //HASH_FIND_STR(list, word, cur);
+    struct node *new = malloc(sizeof(struct node));
+    new->word = strdup(word);
+    new->count = 1;
+
+	HASH_FIND_STR(list, word, cur); // Hash tablosunda word u arar.
+	if(cur){
+		cur->count++;
+	}else{
+		HASH_ADD_KEYPTR(hh, list, new->word, strlen(new->word), new);
+		return new;
+	}
+
+	return list;
+
+
 #else
     /* TODO: Bagli liste kodu */
     cur = list; // listeyi gecici bir degiskene atiyoruz
     while(cur != NULL){ // eger current node bos degilse
     	if(!strcmp(word, cur->word)){ // current node'daki kelime ile text icindeki kelimeyi karsilastiriyoruz
-    		cur->count++; // eger ayni kelime listede varsa listedeki node'un count degerini attiriyoruz
+    		cur->count++; // eger ayni kelime listede varsa listedeki node'un count degerini artiriyoruz
     		return list;
     	}
     	cur = cur->next;
@@ -35,7 +49,6 @@ struct node* add_word(struct node *list, char *word) {
 
 #endif
 
-    return -1;
+    return cur;
 
 }
-

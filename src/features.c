@@ -58,24 +58,25 @@ double sim_score(struct features *s1, struct features *s2) {
 	}
 
 	return result; //bulunan sonuc degeri geri dondurulur.
-
-
-
 }
 
 /* TODO */
 void compute_features(char *text, struct features *feat) {
     /* TODO: Ortak kod */
 	char *sentence, *word, *sptr , *sentence_copy, *word_copy, *rest;
+	int word_count = 0, sentence_count = 0;
 	struct node* list = NULL;
 	sentence = strtok_r(text , "?!.", &sptr);
 	while(sentence){
 		sentence_copy = strdup(sentence);
+		if(strcmp(sentence_copy, "\n"))
+			sentence_count++;
 		word = strtok_r(sentence, " ,:;?!.\n\t", &rest);
 		while(word){
 			word_copy = strdup(word);
 			cleanup(word_copy);
 			if(strcmp(word_copy,"")){
+				word_count++;
 				#ifdef WITH_UTHASH
 					/* TODO: Hash kullanarak kelime listesini
 					 * gezip ilgili sayaclari hesaplayin. Gezdikce
@@ -83,6 +84,7 @@ void compute_features(char *text, struct features *feat) {
 					 * dugumun char* uyesini ve dugumun kendisini
 					 * free() ile iade etmelisiniz.*/
 
+					list = add_word(list, word_copy);
 				#else
 					/* TODO: Bagli liste kullanarak kelime listesini
 					 * gezin. Gezdikce dugumlerin char* uyesini ve
@@ -99,6 +101,8 @@ void compute_features(char *text, struct features *feat) {
 		sentence = strtok_r(NULL , "?!.", &sptr);
 	}
 	/* TODO: Ortak kod. feat yapisinin uyelerini artik doldurabilirsiniz. */
+	printf("word: %d sentence: %d\n", word_count, sentence_count);
+	feat->avg_word_per_sentence = ((double) word_count / (double) sentence_count);
 	free(list);
 
 }
