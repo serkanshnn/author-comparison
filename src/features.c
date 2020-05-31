@@ -49,7 +49,8 @@ double sim_score(struct features *s1, struct features *s2) {
 	double result = 0;
 	
 	//w degeri icin dizi olusturup degerleri icine aktariyoruz.
-	double w[5] = {11, 33, 50, 0.4, 4};
+	double w[5]={11,0.4,4,50,33};
+
 
 	//gerekli olan hesaplama for dongusu icinde hesaplanir.
 	int i;
