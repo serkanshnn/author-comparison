@@ -102,18 +102,26 @@ void compute_features(char *text, struct features *feat) {
 		sentence = strtok_r(NULL , "?!.", &sptr);
 	}
 	/* TODO: Ortak kod. feat yapisinin uyelerini artik doldurabilirsiniz. */
-	printf("word: %d sentence: %d\n", word_count, sentence_count);
+	//printf("word: %d sentence: %d\n", word_count, sentence_count);
 	feat->avg_word_per_sentence = ((double) word_count / (double) sentence_count);
 	int a = 0;
+	int length = 0;
+	int different_word_count = 0;
 
 	while(list != NULL){
+		different_word_count++;
+		length += strlen(list->word);
 		if(list->count == 1)
 			a++;
-		printf("%s -> %d\n", list->word, list->count);
+		//printf("%s -> %d\n", list->word, list->count);
 		list = list->next;
 	}
-	printf("word: %d a: %d\n", word_count, a);
+	//printf("word: %d a: %d\n", word_count, a);
+	//printf("word: %d length: %d\n", word_count, length);
+	//printf("word: %d different: %d\n", word_count, different_word_count);
 	feat->hapax = ((double) a / (double) word_count);
+	feat->avg_word_length = ((double) length / (double) word_count);
+	feat->ttr = ((double) different_word_count / (double) word_count);
 	free(list);
 
 }
