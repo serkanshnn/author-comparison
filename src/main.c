@@ -87,7 +87,6 @@ int main(int argc, char *argv[]) {
      * indeksini best_author'a, skoru ise best_score degiskenine
      * kaydedin. */
 
-    printf("d");
     int skorlar[nr_authors];
 
     int a, enkucukdeger=0;
