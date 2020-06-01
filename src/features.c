@@ -104,6 +104,16 @@ void compute_features(char *text, struct features *feat) {
 	/* TODO: Ortak kod. feat yapisinin uyelerini artik doldurabilirsiniz. */
 	printf("word: %d sentence: %d\n", word_count, sentence_count);
 	feat->avg_word_per_sentence = ((double) word_count / (double) sentence_count);
+	int a = 0;
+
+	while(list != NULL){
+		if(list->count == 1)
+			a++;
+		printf("%s -> %d\n", list->word, list->count);
+		list = list->next;
+	}
+	printf("word: %d a: %d\n", word_count, a);
+	feat->hapax = ((double) a / (double) word_count);
 	free(list);
 
 }
