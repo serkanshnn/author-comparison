@@ -65,13 +65,23 @@ double sim_score(struct features *s1, struct features *s2) {
 void compute_features(char *text, struct features *feat) {
     /* TODO: Ortak kod */
 	char *sentence, *word, *sptr , *sentence_copy, *word_copy, *rest;
+	char *alt_parca,*rest3;
+	int alt_parca_count=0;
 	int word_count = 0, sentence_count = 0;
 	struct node* list = NULL;
 	sentence = strtok_r(text , "?!.", &sptr);
+
+
 	while(sentence){
 		sentence_copy = strdup(sentence);
 		if(strcmp(sentence_copy, "\n"))
 			sentence_count++;
+		rest3=sentence_copy;
+				while((alt_parca=strtok_r(rest3, ",:;", &rest3)))
+				{
+				if(strcmp(alt_parca, "\n"))
+					alt_parca_count++;
+				}
 		word = strtok_r(sentence, " ,:;?!.\n\t", &rest);
 		while(word){
 			word_copy = strdup(word);
@@ -122,7 +132,13 @@ void compute_features(char *text, struct features *feat) {
 	feat->hapax = ((double) a / (double) word_count);
 	feat->avg_word_length = ((double) length / (double) word_count);
 	feat->ttr = ((double) different_word_count / (double) word_count);
+
+
+
+	feat->complexity = ((double) alt_parca_count / (double) sentence_count);
+
 	free(list);
+
 
 }
 
