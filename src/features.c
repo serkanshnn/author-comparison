@@ -44,12 +44,12 @@ double sim_score(struct features *s1, struct features *s2) {
 	struct features *file2 = s2;
 
 	//bu kisimda fai fbi degerleri icin bir dizi olusturup bu diziye bu degerleri aktariyoruz.
-	double fa[5] = {file1->avg_word_length, file1->avg_word_per_sentence, file1->complexity, file1->hapax, file1->ttr};
-	double fb[5] = {file2->avg_word_length, file2->avg_word_per_sentence, file2->complexity, file2->hapax, file2->ttr};
+	double fa[5] = {file1->avg_word_length, file1->ttr, file1->hapax, file1->avg_word_per_sentence, file1->complexity};
+	double fb[5] = {file2->avg_word_length, file2->ttr, file2->hapax, file2->avg_word_per_sentence, file2->complexity};
 	double result = 0;
 	
 	//w degeri icin dizi olusturup degerleri icine aktariyoruz.
-	double w[5]={11,0.4,4,50,33};
+	double w[5]={11,33,50,0.4,4};
 
 
 	//gerekli olan hesaplama for dongusu icinde hesaplanir.
@@ -67,11 +67,10 @@ void compute_features(char *text, struct features *feat) {
 	char *sentence, *word, *sptr , *sentence_copy, *word_copy, *rest;
 	char *alt_parca,*rest3;
 	int alt_parca_count=0;
+	int length = 0;
 	int word_count = 0, sentence_count = 0;
 	struct node* list = NULL;
 	sentence = strtok_r(text , "?!.", &sptr);
-
-
 	while(sentence){
 		sentence_copy = strdup(sentence);
 		if(strcmp(sentence_copy, "\n"))
@@ -102,6 +101,7 @@ void compute_features(char *text, struct features *feat) {
 					 * kendisini free() ile iade etmelisiniz. */
 					list = add_word(list, word_copy);
 				#endif
+				length += strlen(word_copy);
 			}
 
 			free(word_copy);
@@ -115,12 +115,10 @@ void compute_features(char *text, struct features *feat) {
 	//printf("word: %d sentence: %d\n", word_count, sentence_count);
 	feat->avg_word_per_sentence = ((double) word_count / (double) sentence_count);
 	int a = 0;
-	int length = 0;
 	int different_word_count = 0;
 
 	while(list != NULL){
 		different_word_count++;
-		length += strlen(list->word);
 		if(list->count == 1)
 			a++;
 		//printf("%s -> %d\n", list->word, list->count);
@@ -132,9 +130,6 @@ void compute_features(char *text, struct features *feat) {
 	feat->hapax = ((double) a / (double) word_count);
 	feat->avg_word_length = ((double) length / (double) word_count);
 	feat->ttr = ((double) different_word_count / (double) word_count);
-
-
-
 	feat->complexity = ((double) alt_parca_count / (double) sentence_count);
 
 	free(list);
