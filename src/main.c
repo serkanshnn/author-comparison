@@ -94,10 +94,6 @@ int main(int argc, char *argv[]) {
     	skorlar[a]=sim_score(authors[a],&feat);
     }
 
-    for(a=0;a<nr_authors;a++){
-    	printf("skor %d = %d \n ",a,skorlar[a]);
-    }
-
    	int k;
 	int autor=0;
 	enkucukdeger=skorlar[0];
