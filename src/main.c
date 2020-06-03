@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     struct features **authors;
 
     /* En iyi skoru tutacak degisken */
-    double best_score = INFINITY;
+    double best_score = 0;
     /* En iyi skora sahip yazarin dizi icindeki indeksi */
     int best_author = 0;
     /* Dosyanin boyutu */
@@ -94,15 +94,21 @@ int main(int argc, char *argv[]) {
     	skorlar[a]=sim_score(authors[a],&feat);
     }
 
-    int k;
+    for(a=0;a<nr_authors;a++){
+    	printf("skor %d = %d \n ",a,skorlar[a]);
+    }
+
+   	int k;
+	int autor=0;
+	enkucukdeger=skorlar[0];
     for(k=0;k<nr_authors;k++){
     	if(skorlar[k]<enkucukdeger){
     		enkucukdeger=skorlar[k];
-    		best_score=enkucukdeger;
-    		best_author=k;
+    		autor=k;
     	}
     }
-
+	best_score=(double) enkucukdeger;
+	best_author=autor;
 
 
 
