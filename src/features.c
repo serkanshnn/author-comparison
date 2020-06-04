@@ -64,75 +64,87 @@ double sim_score(struct features *s1, struct features *s2) {
 /* TODO */
 void compute_features(char *text, struct features *feat) {
     /* TODO: Ortak kod */
-	char *sentence, *word, *sptr , *sentence_copy, *word_copy, *rest;
-	char *alt_parca,*rest3;
-	int alt_parca_count=0;
-	int length = 0;
-	int word_count = 0, sentence_count = 0;
-	struct node* list = NULL;
-	sentence = strtok_r(text , "?!.", &sptr);
-	while(sentence){
-		sentence_copy = strdup(sentence);
-		if(strcmp(sentence_copy, "\n"))
-			sentence_count++;
-		rest3=sentence_copy;
-				while((alt_parca=strtok_r(rest3, ",:;", &rest3)))
-				{
-				if(strcmp(alt_parca, "\n"))
-					alt_parca_count++;
-				}
-		word = strtok_r(sentence, " ,:;?!.\n\t", &rest);
-		while(word){
-			word_copy = strdup(word);
-			cleanup(word_copy);
-			if(strcmp(word_copy,"")){
-				word_count++;
-				#ifdef WITH_UTHASH
-					/* TODO: Hash kullanarak kelime listesini
-					 * gezip ilgili sayaclari hesaplayin. Gezdikce
-					 * dugumleri HASH_DEL() ile temizleyip, mevcut
-					 * dugumun char* uyesini ve dugumun kendisini
-					 * free() ile iade etmelisiniz.*/
+	char *sentence, *word; // kelime ve cumlelerin tutulacagi degiskenler
+	char *sptr, *rest, *alt_parca, *rest2; // kelime ve cumleleri bolerken kullanilacak degiskenler
+	char *sentence_copy, *word_copy; // kelime ve cumleleri tutmak icin olusturulan copy degiskenleri
 
-					list = add_word(list, word_copy);
-				#else
-					/* TODO: Bagli liste kullanarak kelime listesini
-					 * gezin. Gezdikce dugumlerin char* uyesini ve
-					 * kendisini free() ile iade etmelisiniz. */
-					list = add_word(list, word_copy);
-				#endif
+	// Ozellikleri hesaplamak icin kullanılacak degiskenler
+	int length = 0;
+	int word_count = 0;
+	int sentence_count = 0;
+	int unique_word_count = 0;
+	int different_word_count = 0;
+	int alt_parca_count=0;
+
+	// kelimelerin tutulacagi liste degiskeni
+	struct node* list = NULL;
+
+	sentence = strtok_r(text , "?!.", &sptr); // metni cumlelere bolen kod parcasi
+	while(sentence){
+		sentence_copy = strdup(sentence); // cumleleri copy degiskenine atar
+		if(strcmp(sentence_copy, "\n")) // eger cumle bosluk degilse
+			sentence_count++;
+		rest2 = sentence_copy;
+		while((alt_parca=strtok_r(rest2, ",:;", &rest2))){ // alt cumleleri bolen kod parcasi
+			if(strcmp(alt_parca, "\n")) // eger alt cumle bosluk degilse
+				alt_parca_count++;
+		}
+		word = strtok_r(sentence, " ,:;?!.\n\t", &rest); // cumleleri kelimelere bolen kod parcasi
+		while(word){
+			word_copy = strdup(word); // kelimeleri copy degiskenine atar
+			cleanup(word_copy); // gelen kelimeyi tum noktalama isaretleri ve buyuk harflerden temizler
+			if(strcmp(word_copy,"")){ // eger kelime bos degilse
+				word_count++;
+				list = add_word(list, word_copy); // listeye kelimeyi ekler
 				length += strlen(word_copy);
 			}
 
-			free(word_copy);
+			free(word_copy); // artik kullanilmayacak degisken silinir.
 			word = strtok_r(NULL , " ,:;?!.\n\t", &rest);
 		}
 
-		free(sentence_copy);
+		free(sentence_copy); // artik kullanilmayacak degisken silinir.
 		sentence = strtok_r(NULL , "?!.", &sptr);
 	}
-	/* TODO: Ortak kod. feat yapisinin uyelerini artik doldurabilirsiniz. */
-	//printf("word: %d sentence: %d\n", word_count, sentence_count);
-	feat->avg_word_per_sentence = ((double) word_count / (double) sentence_count);
-	int a = 0;
-	int different_word_count = 0;
+	// Eger liste hash ise
+	#ifdef WITH_UTHASH
+	/* TODO: Hash kullanarak kelime listesini
+	 * gezip ilgili sayaclari hesaplayin. Gezdikce
+	 * dugumleri HASH_DEL() ile temizleyip, mevcut
+	 * dugumun char* uyesini ve dugumun kendisini
+	 * free() ile iade etmelisiniz.*/
 
-	while(list != NULL){
-		different_word_count++;
-		if(list->count == 1)
-			a++;
-		//printf("%s -> %d\n", list->word, list->count);
-		list = list->next;
-	}
-	//printf("word: %d a: %d\n", word_count, a);
-	//printf("word: %d length: %d\n", word_count, length);
-	//printf("word: %d different: %d\n", word_count, different_word_count);
-	feat->hapax = ((double) a / (double) word_count);
+		struct node *s, *tmp;
+
+		HASH_ITER (hh, list, s, tmp) { // Tum listeyi gezer
+			different_word_count++;
+			if(list->count == 1)
+				unique_word_count++;
+			HASH_DEL(list, s); // Baglari free eder
+
+		}
+
+	// Eger liste linked list ise
+	#else
+	/* TODO: Bagli liste kullanarak kelime listesini
+	 * gezin. Gezdikce dugumlerin char* uyesini ve
+	 * kendisini free() ile iade etmelisiniz. */
+		while(list != NULL){ // Tum linked listi gezer
+				different_word_count++;
+				if(list->count == 1)
+					unique_word_count++;
+				list = list->next;
+			}
+	#endif
+
+	/* TODO: Ortak kod. feat yapisinin uyelerini artik doldurabilirsiniz. */
+	feat->avg_word_per_sentence = ((double) word_count / (double) sentence_count);
+	feat->hapax = ((double) unique_word_count / (double) word_count);
 	feat->avg_word_length = ((double) length / (double) word_count);
 	feat->ttr = ((double) different_word_count / (double) word_count);
 	feat->complexity = ((double) alt_parca_count / (double) sentence_count);
 
-	free(list);
+	free(list); // Listeyi hafizadan siler
 
 
 }

@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     struct features **authors;
 
     /* En iyi skoru tutacak degisken */
-    double best_score = 0;
+    double best_score = INFINITY;
     /* En iyi skora sahip yazarin dizi icindeki indeksi */
     int best_author = 0;
     /* Dosyanin boyutu */
@@ -87,24 +87,20 @@ int main(int argc, char *argv[]) {
      * indeksini best_author'a, skoru ise best_score degiskenine
      * kaydedin. */
 
-    int skorlar[nr_authors];
-
-    int a, enkucukdeger=0;
-    for(a=0;a<nr_authors;a++){
-    	skorlar[a]=sim_score(authors[a],&feat);
+    double scores[nr_authors]; //her yazarın skorlarının atılacağı dizi burada tanımlanmıştır.
+    int a;
+    for(a = 0; a < nr_authors; a++){//bu for dongusu ile birlikte skorlar skorlar dizisine atılır.
+    	scores[a] = sim_score(authors[a], &feat);
     }
 
    	int k;
-	int autor=0;
-	enkucukdeger=skorlar[0];
-    for(k=0;k<nr_authors;k++){
-    	if(skorlar[k]<enkucukdeger){
-    		enkucukdeger=skorlar[k];
-    		autor=k;
+	best_score = scores[0];
+    for(k = 0; k < nr_authors; k++){//skorlar dizisindeki en kucuk eleman bulunarak en iyiler //bulunur.
+    	if(scores[k] < best_score){
+    		best_score = scores[k];
+    		best_author = k;
     	}
     }
-	best_score=(double) enkucukdeger;
-	best_author=autor;
 
 
 
