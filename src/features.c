@@ -117,13 +117,25 @@ void compute_features(char *text, struct features *feat) {
 	int a = 0;
 	int different_word_count = 0;
 
+#ifdef WITH_UTHASH
 	while(list != NULL){
-		different_word_count++;
-		if(list->count == 1)
-			a++;
-		//printf("%s -> %d\n", list->word, list->count);
-		list = list->next;
-	}
+			different_word_count++;
+			if(list->count == 1)
+				a++;
+			//printf("%s -> %d\n", list->word, list->count);
+			list = list->hh.next;
+		}
+#else
+	while(list != NULL){
+			different_word_count++;
+			if(list->count == 1)
+				a++;
+			//printf("%s -> %d\n", list->word, list->count);
+			list = list->next;
+		}
+#endif
+
+
 	//printf("word: %d a: %d\n", word_count, a);
 	//printf("word: %d length: %d\n", word_count, length);
 	//printf("word: %d different: %d\n", word_count, different_word_count);
