@@ -87,24 +87,20 @@ int main(int argc, char *argv[]) {
      * indeksini best_author'a, skoru ise best_score degiskenine
      * kaydedin. */
 
-    int skorlar[nr_authors];
-
-    int a, enkucukdeger=0;
-    for(a=0;a<nr_authors;a++){
-    	skorlar[a]=sim_score(authors[a],&feat);
+    int scores[nr_authors];
+    int a;
+    for(a = 0; a < nr_authors; a++){
+    	scores[a] = sim_score(authors[a], &feat);
     }
 
    	int k;
-	int autor=0;
-	enkucukdeger=skorlar[0];
-    for(k=0;k<nr_authors;k++){
-    	if(skorlar[k]<enkucukdeger){
-    		enkucukdeger=skorlar[k];
-    		autor=k;
+	best_score = scores[0];
+    for(k = 0; k < nr_authors; k++){
+    	if(scores[k] < best_score){
+    		best_score = scores[k];
+    		best_author = k;
     	}
     }
-	best_score=(double) enkucukdeger;
-	best_author=autor;
 
 
 
