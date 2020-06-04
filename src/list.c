@@ -8,17 +8,22 @@ struct node* add_word(struct node *list, char *word) {
     struct node *cur = NULL;
 #ifdef WITH_UTHASH
     /* TODO: Hash kodu */
-    struct node *new = malloc(sizeof(struct node));
-    new->word = strdup(word);
-    new->count = 1;
+    /* TODO: Hash kodu */
+        struct node *new=NULL;
 
-	HASH_FIND_STR(list, word, cur); // Hash tablosunda word u arar.
-	if(cur){
-		cur->count++;
-	}else{
-		HASH_ADD_KEYPTR(hh, list, new->word, strlen(new->word), new);
-		return new;
-	}
+        HASH_FIND_STR(list, word, new); // Hash tablosunda word u arar.
+
+    	 if (new != NULL) {
+    		 	 new->count++;
+    	        }
+    	 else {
+    	            //yeni eleman eklenicek kısım
+    		 	 new=(struct node*) malloc(sizeof(struct node));
+    		 	 new->word=strdup(word);
+    		 	 new->count=1;
+    		 	 HASH_ADD_KEYPTR( hh , list , new->word ,strlen(new->word), new);
+    	 }
+
 
 	return list;
 
