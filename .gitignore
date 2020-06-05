@@ -1,3 +1,7 @@
 *.o
 .project
 .DS_Store
+main
+main_hash
+test
+test_hash
