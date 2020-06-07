@@ -121,7 +121,8 @@ void compute_features(char *text, struct features *feat) {
 			if(list->count == 1)
 				unique_word_count++;
 			HASH_DEL(list, s); // Baglari free eder
-
+			free(s->word);
+            		free(s);
 		}
 
 	// Eger liste linked list ise
@@ -129,11 +130,15 @@ void compute_features(char *text, struct features *feat) {
 	/* TODO: Bagli liste kullanarak kelime listesini
 	 * gezin. Gezdikce dugumlerin char* uyesini ve
 	 * kendisini free() ile iade etmelisiniz. */
+		struct node *tmp;
 		while(list != NULL){ // Tum linked listi gezer
 				different_word_count++;
 				if(list->count == 1)
 					unique_word_count++;
-				list = list->next;
+				free(list->word);
+				tmp = list->next;
+                		free(list);
+                		list = tmp;
 			}
 	#endif
 
